@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Melodía</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4f0 50%, #ffd9ea 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .floating-notes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .note {
+            position: absolute;
+            font-size: 24px;
+            opacity: 0.15;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(15deg); }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            padding: 40px 25px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+        }
+
+        h1 {
+            color: #ff69b4;
+            font-size: 2em;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .snoopy-container {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .snoopy-container img {
+            max-width: 100%;
+            width: 240px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .snoopy-container img:active {
+            transform: scale(0.98);
+        }
+
+        .message {
+            color: #555;
+            font-size: 1.15em;
+            line-height: 1.9;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff5fa 0%, #ffe9f5 100%);
+            border-radius: 20px;
+            border-left: 5px solid #ff69b4;
+            text-align: left;
+        }
+
+        .highlight {
+            color: #ff69b4;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #ffb3d9 0%, #ff8dc7 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 16px 40px;
+            font-size: 1.05em;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb3d9, transparent);
+            margin: 30px 0;
+        }
+
+        .wave {
+            position: relative;
+            height: 4px;
+            background: linear-gradient(90deg, #ff69b4, #ffb3d9, #ff69b4);
+            border-radius: 2px;
+            margin: 25px 0;
+            overflow: hidden;
+        }
+
+        .wave::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+            animation: wave 2s infinite;
+        }
+
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-notes" id="notes"></div>
+
+    <div class="container">
+        <h1>Melodía del Corazón</h1>
+
+        <div class="snoopy-container">
+            <img src="snoopy3.jpg" alt="Snoopy">
+        </div>
+
+        <div class="message">
+            La vida es como una <span class="highlight">melodía</span>. A veces tiene notas altas, a veces bajas, pero se vuelve verdaderamente <span class="highlight">hermosa</span> cuando encuentras a alguien con quien <span class="highlight">armonizar</span>.
+        </div>
+
+        <div class="wave"></div>
+
+        <div class="snoopy-container">
+            <img src="snoopy4.jpg" alt="Snoopy">
+        </div>
+
+        <div class="message">
+            Hay personas que, sin darse cuenta, se convierten en la <span class="highlight">canción favorita</span> de nuestros días.
+            <br><br>
+            Esa que no podemos dejar de <span class="highlight">repetir</span> en nuestra mente y que hace <span class="highlight">sonreír</span> solo con recordarla.
+        </div>
+
+        <a href="index.html" class="back-button">Volver al Buzón</a>
+    </div>
+
+    <script>
+        const notesContainer = document.getElementById('notes');
+        const noteSymbols = ['♪', '♫', '♬'];
+        
+        for (let i = 0; i < 12; i++) {
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.textContent = noteSymbols[Math.floor(Math.random() * noteSymbols.length)];
+            note.style.left = Math.random() * 100 + '%';
+            note.style.top = Math.random() * 100 + '%';
+            note.style.animationDelay = Math.random() * 4 + 's';
+            notesContainer.appendChild(note);
+        }
+    </script>
+</body>
+</html>
