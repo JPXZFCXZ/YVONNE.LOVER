@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzón Especial</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .image-container {
+            margin-bottom: 20px;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            width: 250px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ff69b4;
+            font-size: 1.8em;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #ff8dc7;
+            font-size: 1em;
+            margin-bottom: 30px;
+        }
+
+        .mailbox-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .letter-button {
+            background: linear-gradient(135deg, #ffb3d9 0%, #ff8dc7 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .letter-button:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="image-container">
+            <img src="focas.jpg" alt="Foquita especial">
+        </div>
+        
+        <h1>Buzón Especial</h1>
+        <p class="subtitle">Cada carta guarda algo especial para ti</p>
+        
+        <div class="mailbox-grid">
+            <a href="flores.html" class="letter-button">Flores</a>
+            <a href="estrellas.html" class="letter-button">Estrellas</a>
+            <a href="melodia.html" class="letter-button">Melodía</a>
+            <a href="momentos.html" class="letter-button">Momentos</a>
+            <a href="mensaje.html" class="letter-button">Mensaje</a>
+        </div>
+    </div>
+</body>
+</html>
