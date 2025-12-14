@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mensaje</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #fff0f8 0%, #ffe5f3 50%, #ffdaea 100%);
+            min-height: 100vh;
+            padding: 20px;
+            position: relative;
+        }
+
+        .hearts-bg {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            opacity: 0.1;
+            animation: floatHeart 15s ease-in-out infinite;
+        }
+
+        @keyframes floatHeart {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(20deg); }
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 25px;
+            padding: 40px 25px;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 20px 60px rgba(255, 105, 180, 0.3);
+        }
+
+        h1 {
+            color: #ff69b4;
+            font-size: 2em;
+            margin-bottom: 30px;
+            font-weight: normal;
+        }
+
+        .snoopy-container {
+            margin: 30px 0;
+            position: relative;
+        }
+
+        .snoopy-container img {
+            max-width: 100%;
+            width: 240px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease;
+        }
+
+        .snoopy-container img:active {
+            transform: scale(0.98);
+        }
+
+        .message {
+            color: #555;
+            font-size: 1.15em;
+            line-height: 1.9;
+            margin: 30px 0;
+            padding: 25px;
+            background: linear-gradient(135deg, #fff5fa 0%, #ffe9f5 100%);
+            border-radius: 20px;
+            border-left: 5px solid #ff69b4;
+            text-align: left;
+        }
+
+        .highlight {
+            color: #ff69b4;
+            font-weight: bold;
+            font-style: italic;
+        }
+
+        .final-message {
+            font-size: 1.2em;
+            color: #ff69b4;
+            font-weight: 500;
+            margin: 35px 0;
+            padding: 30px;
+            background: linear-gradient(135deg, #fff5fa 0%, #ffe9f5 100%);
+            border-radius: 20px;
+            border: 3px solid #ffb3d9;
+            line-height: 1.9;
+            text-align: left;
+        }
+
+        .back-button {
+            background: linear-gradient(135deg, #ffb3d9 0%, #ff8dc7 100%);
+            border: none;
+            border-radius: 15px;
+            padding: 16px 40px;
+            font-size: 1.05em;
+            color: white;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 30px;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(255, 105, 180, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .back-button:active {
+            transform: translateY(2px);
+            box-shadow: 0 4px 15px rgba(255, 105, 180, 0.3);
+        }
+
+        .divider {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #ffb3d9, transparent);
+            margin: 30px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-bg" id="hearts"></div>
+
+    <div class="container">
+        <h1>Mensaje Especial</h1>
+
+        <div class="snoopy-container">
+            <img src="snoopy8.jpg" alt="Snoopy">
+        </div>
+
+        <div class="message">
+            A veces las palabras más importantes son las que <span class="highlight">no nos atrevemos a decir</span>.
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="snoopy-container">
+            <img src="snoopy9.jpg" alt="Snoopy">
+        </div>
+
+        <div class="message">
+            Hay personas que <span class="highlight">iluminan</span> nuestros días, que hacen que todo sea <span class="highlight">más bonito</span>, que nos hacen <span class="highlight">sonreír sin razón</span>.
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="snoopy-container">
+            <img src="snoopy10.jpg" alt="Snoopy">
+        </div>
+
+        <div class="final-message">
+            Me gusta compartir mi tiempo contigo,<br>
+            me gusta tu forma de ser,<br>
+            me gusta cuando estás cerca.
+            <br><br>
+            Y aunque no lo diga con todas las letras, quiero que sepas que eres alguien muy especial para mí.
+            <br><br>
+            Estos pequeños detalles son solo una forma de decirte que me importas, que te valoro, y que me alegra que existas.
+        </div>
+
+        <a href="index.html" class="back-button">Volver al Buzón</a>
+    </div>
+
+    <script>
+        const heartsContainer = document.getElementById('hearts');
+        const heartSymbol = '♥';
+        
+        for (let i = 0; i < 15; i++) {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.textContent = heartSymbol;
+            heart.style.left = Math.random() * 100 + '%';
+            heart.style.top = Math.random() * 100 + '%';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            heartsContainer.appendChild(heart);
+        }
+    </script>
+</body>
+</html>
