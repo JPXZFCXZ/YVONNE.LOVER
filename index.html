@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Buzón Especial</title>
+
     <style>
         * {
             margin: 0;
@@ -12,87 +13,89 @@
         }
 
         body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ffeef8 0%, #ffe0f0 100%);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #ffeef8, #ffe0f0);
             min-height: 100vh;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
         }
 
         .container {
-            max-width: 500px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.2);
-            padding: 30px 20px;
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
+            padding: 25px 18px;
             text-align: center;
         }
 
-        .image-container {
-            margin-bottom: 20px;
-        }
-
         .image-container img {
+            width: 220px;
             max-width: 100%;
-            width: 250px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 14px;
+            margin-bottom: 18px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h1 {
             color: #ff69b4;
-            font-size: 1.8em;
-            margin-bottom: 10px;
+            font-size: 1.6em;
+            margin-bottom: 6px;
         }
 
         .subtitle {
             color: #ff8dc7;
-            font-size: 1em;
-            margin-bottom: 30px;
+            font-size: 0.95em;
+            margin-bottom: 22px;
         }
 
         .mailbox-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
         }
 
         .letter-button {
-            background: linear-gradient(135deg, #ffb3d9 0%, #ff8dc7 100%);
+            background: linear-gradient(135deg, #ffb3d9, #ff8dc7);
             border: none;
-            border-radius: 12px;
-            padding: 20px;
-            cursor: pointer;
+            border-radius: 10px;
+            padding: 16px;
             text-decoration: none;
-            display: block;
-            color: white;
-            font-size: 1.1em;
-            font-weight: bold;
-            box-shadow: 0 4px 10px rgba(255, 105, 180, 0.3);
-            transition: all 0.3s ease;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(255, 105, 180, 0.25);
+            transition: transform 0.2s ease;
         }
 
         .letter-button:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
     </style>
 </head>
+
 <body>
     <div class="container">
+
         <div class="image-container">
             <img src="focas.jpg" alt="Foquita especial">
         </div>
-        
+
         <h1>Buzón Especial</h1>
         <p class="subtitle">Cada carta guarda algo especial para ti</p>
-        
+
         <div class="mailbox-grid">
             <a href="flores.html" class="letter-button">Flores</a>
             <a href="estrellas.html" class="letter-button">Estrellas</a>
             <a href="melodia.html" class="letter-button">Melodía</a>
             <a href="momentos.html" class="letter-button">Momentos</a>
             <a href="mensaje.html" class="letter-button">Mensaje</a>
+            <a href="teamo.html" class="letter-button">Te Amo 💖</a>
         </div>
+
     </div>
 </body>
 </html>
