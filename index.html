@@ -24,60 +24,80 @@
 
         .container {
             width: 100%;
-            max-width: 420px;
+            max-width: 430px;
             background: #ffffff;
-            border-radius: 18px;
+            border-radius: 20px;
             box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
-            padding: 25px 18px;
+            padding: 20px;
+        }
+
+        .image-container {
             text-align: center;
+            margin-bottom: 15px;
         }
 
         .image-container img {
-            width: 220px;
-            max-width: 100%;
+            width: 210px;
             border-radius: 14px;
-            margin-bottom: 18px;
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         h1 {
+            text-align: center;
             color: #ff69b4;
-            font-size: 1.6em;
-            margin-bottom: 6px;
+            font-size: 1.5em;
+            margin-bottom: 12px;
         }
 
-        .subtitle {
-            color: #ff8dc7;
-            font-size: 0.95em;
-            margin-bottom: 22px;
-        }
-
-        .mailbox-grid {
-            display: grid;
-            grid-template-columns: 1fr;
+        /* Layout tipo barra */
+        .layout {
+            display: flex;
             gap: 12px;
+        }
+
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 40%;
         }
 
         .letter-button {
             background: linear-gradient(135deg, #ffb3d9, #ff8dc7);
-            border: none;
-            border-radius: 10px;
-            padding: 16px;
+            border-radius: 12px;
+            padding: 14px 10px;
+            text-align: center;
             text-decoration: none;
-            color: #fff;
-            font-size: 1em;
+            color: white;
+            font-size: 0.95em;
             font-weight: 600;
             box-shadow: 0 3px 8px rgba(255, 105, 180, 0.25);
             transition: transform 0.2s ease;
         }
 
         .letter-button:active {
-            transform: scale(0.97);
+            transform: scale(0.96);
+        }
+
+        .center-text {
+            flex: 1;
+            background: #fff5fb;
+            border-radius: 14px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #ff69b4;
+            font-size: 1em;
+            font-weight: 500;
+            line-height: 1.4;
         }
     </style>
 </head>
 
 <body>
+
     <div class="container">
 
         <div class="image-container">
@@ -85,17 +105,28 @@
         </div>
 
         <h1>Buzón Especial</h1>
-        <p class="subtitle">Cada carta guarda algo especial para ti</p>
 
-        <div class="mailbox-grid">
-            <a href="flores.html" class="letter-button">Flores</a>
-            <a href="estrellas.html" class="letter-button">Estrellas</a>
-            <a href="melodia.html" class="letter-button">Melodía</a>
-            <a href="momentos.html" class="letter-button">Momentos</a>
-            <a href="mensaje.html" class="letter-button">Mensaje</a>
-            <a href="teamo.html" class="letter-button">Te Amo 💖</a>
+        <div class="layout">
+
+            <!-- Barra lateral -->
+            <div class="sidebar">
+                <a href="flores.html" class="letter-button">Floreshitas</a>
+                <a href="estrellas.html" class="letter-button">Estrellitas</a>
+                <a href="melodia.html" class="letter-button">Melodía jpxz</a>
+                <a href="momentos.html" class="letter-button">Moments <3</a>
+                <a href="mensaje.html" class="letter-button">DM's y love</a>
+                <a href="teamo.html" class="letter-button">Te kelo 💖</a>
+            </div>
+
+            <!-- Texto central -->
+            <div class="center-text">
+                Un espacio sin límite<br>
+                como mi cariño por ti 💕
+            </div>
+
         </div>
 
     </div>
+
 </body>
 </html>
