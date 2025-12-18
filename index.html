@@ -29,11 +29,23 @@
             border-radius: 20px;
             box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
             padding: 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .image-container {
             text-align: center;
             margin-bottom: 15px;
+            animation: softFloat 4s ease-in-out infinite;
+        }
+
+        @keyframes softFloat {
+            0%,100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
         }
 
         .image-container img {
@@ -49,7 +61,6 @@
             margin-bottom: 12px;
         }
 
-        /* Layout tipo barra */
         .layout {
             display: flex;
             gap: 12px;
@@ -72,7 +83,12 @@
             font-size: 0.95em;
             font-weight: 600;
             box-shadow: 0 3px 8px rgba(255, 105, 180, 0.25);
-            transition: transform 0.2s ease;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .letter-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(255, 105, 180, 0.35);
         }
 
         .letter-button:active {
@@ -92,6 +108,12 @@
             font-size: 1em;
             font-weight: 500;
             line-height: 1.4;
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%,100% { box-shadow: 0 0 0 rgba(255,105,180,0.0); }
+            50% { box-shadow: 0 0 18px rgba(255,105,180,0.25); }
         }
     </style>
 </head>
@@ -113,9 +135,10 @@
                 <a href="flores.html" class="letter-button">Floreshitas</a>
                 <a href="estrellas.html" class="letter-button">Estrellitas</a>
                 <a href="melodia.html" class="letter-button">Melodía jpxz</a>
-                <a href="momentos.html" class="letter-button">Moments <3</a>
+                <a href="momentos.html" class="letter-button">Moments &lt;3</a>
                 <a href="mensaje.html" class="letter-button">DM's y love</a>
                 <a href="teamo.html" class="letter-button">Te kelo 💖</a>
+                <a href="jpxzshit.html" class="letter-button">Archivo especial</a>
             </div>
 
             <!-- Texto central -->
