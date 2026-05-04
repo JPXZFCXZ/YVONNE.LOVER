@@ -1,155 +1,1029 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buzón Especial</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Buzon Especial</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    :root {
+      --pink:   #F4A7BF;
+      --rose:   #E8728F;
+      --deep:   #C94F6D;
+      --blush:  #FAE3EB;
+      --petal:  #FDF0F5;
+      --bg:     #FFFFFF;
+      --txt:    #3D1A26;
+      --muted:  #B07088;
+      --line:   rgba(232,114,143,0.18);
+    }
 
-        body {
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #ffeef8, #ffe0f0);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 15px;
-        }
+    html, body { height: 100%; width: 100%; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--bg);
+      overflow-x: hidden;
+    }
 
-        .container {
-            width: 100%;
-            max-width: 430px;
-            background: #ffffff;
-            border-radius: 20px;
-            box-shadow: 0 8px 25px rgba(255, 105, 180, 0.2);
-            padding: 20px;
-            animation: fadeIn 0.8s ease;
-        }
+    /* ===================================
+       INTRO
+    =================================== */
+    #intro {
+      position: fixed;
+      inset: 0;
+      background: #fff8fb;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* petals de fondo intro */
+    .ipetal {
+      position: absolute;
+      border-radius: 50% 50% 50% 0;
+      opacity: 0;
+      animation: petalFall linear infinite;
+    }
+    @keyframes petalFall {
+      0%   { transform: translateY(-40px) rotate(0deg); opacity: 0; }
+      10%  { opacity: 0.5; }
+      90%  { opacity: 0.3; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
 
-        .image-container {
-            text-align: center;
-            margin-bottom: 15px;
-            animation: softFloat 4s ease-in-out infinite;
-        }
+    /* canvas corazon */
+    #heartCanvas {
+      width: 280px;
+      height: 280px;
+      display: block;
+      position: relative;
+      z-index: 2;
+    }
 
-        @keyframes softFloat {
-            0%,100% { transform: translateY(0); }
-            50% { transform: translateY(-6px); }
-        }
+    /* flecha que atraviesa */
+    .arrow-wrap {
+      position: absolute;
+      top: 50%;
+      left: -60px;
+      transform: translateY(-50%);
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0;
+    }
+    .arrow-wrap.shoot {
+      animation: arrowShoot 1.15s cubic-bezier(.25,.1,.25,1) forwards;
+    }
+    @keyframes arrowShoot {
+      0%   { left: -60px; opacity: 0; }
+      8%   { opacity: 1; }
+      92%  { opacity: 1; }
+      100% { left: calc(100% + 60px); opacity: 0; }
+    }
 
-        .image-container img {
-            width: 210px;
-            border-radius: 14px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-        }
+    .arrow-svg {
+      width: 90px;
+      height: 26px;
+      filter: drop-shadow(0 0 8px rgba(232,114,143,0.55));
+    }
 
-        h1 {
-            text-align: center;
-            color: #ff69b4;
-            font-size: 1.5em;
-            margin-bottom: 12px;
-        }
+    /* texto intro */
+    .intro-copy {
+      margin-top: 12px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+      opacity: 0;
+      animation: softUp 0.9s ease 2.1s forwards;
+    }
+    .intro-copy p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--deep);
+      line-height: 1.2;
+    }
+    .intro-copy small {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.62rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 300;
+    }
 
-        .layout {
-            display: flex;
-            gap: 12px;
-        }
+    /* linea decorativa */
+    .intro-line {
+      width: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose), transparent);
+      margin: 14px auto 0;
+      animation: growLine 0.8s ease 2.7s forwards;
+    }
+    @keyframes growLine { to { width: 120px; } }
 
-        .sidebar {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            width: 40%;
-        }
+    .intro-hint {
+      margin-top: 44px;
+      font-size: 0.6rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 300;
+      opacity: 0;
+      position: relative;
+      z-index: 2;
+      animation: breathe 2.4s ease 3s infinite;
+    }
+    @keyframes breathe {
+      0%,100% { opacity: 0.3; }
+      50%      { opacity: 0.85; }
+    }
 
-        .letter-button {
-            background: linear-gradient(135deg, #ffb3d9, #ff8dc7);
-            border-radius: 12px;
-            padding: 14px 10px;
-            text-align: center;
-            text-decoration: none;
-            color: white;
-            font-size: 0.95em;
-            font-weight: 600;
-            box-shadow: 0 3px 8px rgba(255, 105, 180, 0.25);
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-        }
+    /* salida intro */
+    #intro.out {
+      animation: introOut 0.85s cubic-bezier(.7,0,.2,1) forwards;
+    }
+    @keyframes introOut {
+      0%   { opacity: 1; clip-path: circle(100% at 50% 50%); }
+      100% { opacity: 0; clip-path: circle(0% at 50% 50%); }
+    }
 
-        .letter-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 14px rgba(255, 105, 180, 0.35);
-        }
+    /* ===================================
+       BACKGROUND PAGE
+    =================================== */
+    .floaters {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .fl {
+      position: absolute;
+      border-radius: 50%;
+      background: var(--blush);
+      animation: floatBall ease-in-out infinite;
+      opacity: 0;
+    }
+    @keyframes floatBall {
+      0%   { transform: translateY(0) scale(1); opacity: 0; }
+      15%  { opacity: 0.45; }
+      85%  { opacity: 0.3; }
+      100% { transform: translateY(-110vh) scale(0.6); opacity: 0; }
+    }
 
-        .letter-button:active {
-            transform: scale(0.96);
-        }
+    .bg-mesh {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      background:
+        radial-gradient(ellipse 55% 35% at 15% 10%, rgba(244,167,191,0.12) 0%, transparent 70%),
+        radial-gradient(ellipse 45% 40% at 88% 80%, rgba(232,114,143,0.10) 0%, transparent 70%);
+    }
 
-        .center-text {
-            flex: 1;
-            background: #fff5fb;
-            border-radius: 14px;
-            padding: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            color: #ff69b4;
-            font-size: 1em;
-            font-weight: 500;
-            line-height: 1.4;
-            animation: pulse 3s ease-in-out infinite;
-        }
+    /* ===================================
+       PAGE
+    =================================== */
+    .page {
+      position: relative;
+      z-index: 1;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 48px 20px 60px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      opacity: 0;
+    }
+    .page.show { animation: softUp 0.8s ease 0.05s forwards; }
 
-        @keyframes pulse {
-            0%,100% { box-shadow: 0 0 0 rgba(255,105,180,0.0); }
-            50% { box-shadow: 0 0 18px rgba(255,105,180,0.25); }
-        }
-    </style>
+    @keyframes softUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ===================================
+       HEADER
+    =================================== */
+    .hdr { text-align: center; width: 100%; }
+    .hdr-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--rose);
+      border: 1px solid rgba(232,114,143,0.3);
+      border-radius: 100px;
+      padding: 5px 16px;
+      margin-bottom: 16px;
+    }
+    .hdr-tag-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: pd 1.4s ease infinite;
+    }
+    @keyframes pd {
+      0%,100% { transform: scale(1); }
+      50%      { transform: scale(1.6); }
+    }
+    .hdr h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 300;
+      font-size: 3.2rem;
+      color: var(--txt);
+      line-height: 1;
+      letter-spacing: -0.01em;
+    }
+    .hdr h1 em { font-style: italic; color: var(--rose); }
+    .hdr-sub {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* ===================================
+       STATS ROW
+    =================================== */
+    .stats {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+    }
+    .stat {
+      background: var(--petal);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 14px 10px;
+      text-align: center;
+    }
+    .stat-n {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--deep);
+      line-height: 1;
+    }
+    .stat-l {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 4px;
+    }
+
+    /* ===================================
+       FOTO
+    =================================== */
+    .photo-wrap { width: 100%; position: relative; }
+    .photo-badge {
+      position: absolute;
+      top: -13px; right: 16px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      z-index: 2;
+      box-shadow: 0 4px 16px rgba(232,114,143,0.1);
+    }
+    .badge-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--rose);
+      animation: hb 1.4s ease infinite;
+    }
+    @keyframes hb {
+      0%,100% { transform: scale(1); opacity:1; }
+      14%      { transform: scale(1.55); }
+      28%      { transform: scale(1); }
+      42%      { transform: scale(1.3); }
+    }
+    .photo-badge span {
+      font-size: 0.63rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--txt);
+      font-weight: 400;
+    }
+    .photo-frame {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      aspect-ratio: 16/10;
+      position: relative;
+      box-shadow: 0 12px 40px rgba(232,114,143,0.15);
+    }
+    .photo-frame img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+    .photo-frame:active img { transform: scale(1.03); }
+    .photo-grad {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, transparent 45%, rgba(60,10,22,0.5));
+    }
+    .photo-cap {
+      position: absolute;
+      bottom: 16px; left: 18px; right: 18px;
+    }
+    .photo-cap p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: rgba(255,255,255,0.92);
+    }
+    .photo-cap small {
+      font-size: 0.6rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,210,225,0.6);
+      font-weight: 300;
+    }
+    /* sticker esquina */
+    .photo-sticker {
+      position: absolute;
+      bottom: -10px; left: 18px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.65rem;
+      color: var(--rose);
+      letter-spacing: 0.08em;
+      font-weight: 400;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+      transform: rotate(-2deg);
+    }
+
+    /* ===================================
+       RULE
+    =================================== */
+    .rule {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 6px;
+    }
+    .rule::before, .rule::after {
+      content: ''; flex: 1; height: 1px;
+      background: var(--line);
+    }
+    .rule span {
+      font-size: 0.57rem;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--pink);
+      white-space: nowrap;
+      font-weight: 400;
+    }
+
+    /* ===================================
+       GRID CARDS
+    =================================== */
+    .grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .card {
+      border-radius: 20px;
+      padding: 18px 14px 14px;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 110px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.17s ease, box-shadow 0.17s ease;
+      border: 1px solid transparent;
+    }
+    .card:active { transform: scale(0.95); }
+
+    /* variantes claras */
+    .ca { background: #FEF0F5; border-color: rgba(244,167,191,0.35); }
+    .cb { background: #FDE8F0; border-color: rgba(232,114,143,0.25); }
+    .cc { background: #FCDDE8; border-color: rgba(232,114,143,0.2); }
+    .cd { background: #FBD3E2; border-color: rgba(201,79,109,0.2); }
+    .ce { background: #FAC9DC; border-color: rgba(201,79,109,0.22); }
+    .cf { background: #F9BFD6; border-color: rgba(201,79,109,0.25); }
+
+    /* brillo superior */
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9), transparent);
+    }
+
+    .card-n {
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      font-weight: 400;
+      color: rgba(201,79,109,0.35);
+    }
+    .card-lbl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.18rem;
+      font-weight: 400;
+      color: var(--txt);
+      line-height: 1.2;
+    }
+    .card-s {
+      font-size: 0.66rem;
+      font-weight: 300;
+      color: var(--muted);
+      letter-spacing: 0.05em;
+      margin-top: 1px;
+    }
+    .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .card-arr {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: rgba(232,114,143,0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-arr svg { width: 9px; height: 9px; }
+    .card-arr svg path { stroke: var(--deep); }
+
+    /* wide */
+    .card-wide {
+      grid-column: 1/-1;
+      border-radius: 20px;
+      padding: 0;
+      text-decoration: none;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: stretch;
+      overflow: hidden;
+      box-shadow: 0 8px 28px rgba(232,114,143,0.18);
+      transition: transform 0.17s ease;
+      position: relative;
+    }
+    .card-wide:active { transform: scale(0.97); }
+    .wide-left {
+      background: linear-gradient(130deg, #FFB8D0, #F48BAB);
+      padding: 20px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .wide-lbl {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      color: white;
+      line-height: 1.1;
+    }
+    .wide-s {
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+    .wide-right {
+      background: linear-gradient(130deg, #F07096, #C94F6D);
+      padding: 0 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .wide-icon svg { width: 20px; height: 20px; }
+
+    /* ===================================
+       QUOTE CARD
+    =================================== */
+    .quote-card {
+      width: 100%;
+      padding: 26px 24px;
+      background: var(--petal);
+      border-radius: 20px;
+      border: 1px solid var(--line);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .quote-card::before {
+      content: '';
+      position: absolute;
+      top: -60px; right: -60px;
+      width: 160px; height: 160px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(244,167,191,0.25), transparent 70%);
+    }
+    .quote-card::after {
+      content: '';
+      position: absolute;
+      bottom: -50px; left: -50px;
+      width: 130px; height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(232,114,143,0.15), transparent 70%);
+    }
+    .quote-mark {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 3.5rem;
+      color: rgba(232,114,143,0.2);
+      line-height: 1;
+      margin-bottom: -6px;
+      display: block;
+    }
+    .quote-card p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.12rem;
+      color: var(--txt);
+      line-height: 1.7;
+      font-weight: 300;
+      position: relative;
+      z-index: 1;
+    }
+    .quote-dash {
+      margin: 16px auto 0;
+      width: 30px; height: 1px;
+      background: rgba(232,114,143,0.35);
+    }
+
+    /* ===================================
+       FOOTER
+    =================================== */
+    .foot {
+      text-align: center;
+      padding-bottom: 4px;
+    }
+    .foot p {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(176,112,136,0.4);
+      font-weight: 300;
+    }
+
+    /* ===================================
+       RIPPLE
+    =================================== */
+    .rpl {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      transform: scale(0);
+      animation: rplA 0.5s linear forwards;
+      pointer-events: none;
+    }
+    @keyframes rplA { to { transform: scale(5); opacity: 0; } }
+  </style>
 </head>
-
 <body>
 
-    <div class="container">
+<!-- floating balls bg -->
+<div class="floaters" id="floaters"></div>
+<div class="bg-mesh"></div>
 
-        <div class="image-container">
-            <img src="focas.jpg" alt="Foquita especial">
-        </div>
+<!-- ========================
+     INTRO
+======================== -->
+<div id="intro">
 
-        <h1>Buzón Especial</h1>
+  <!-- petals de fondo -->
+  <div id="ipetals"></div>
 
-        <div class="layout">
+  <canvas id="heartCanvas" width="560" height="560"></canvas>
 
-            <!-- Barra lateral -->
-            <div class="sidebar">
-                <a href="flores.html" class="letter-button">Floreshitas</a>
-                <a href="estrellas.html" class="letter-button">Estrellitas</a>
-                <a href="melodia.html" class="letter-button">Melodía jpxz</a>
-                <a href="momentos.html" class="letter-button">Moments &lt;3</a>
-                <a href="mensaje.html" class="letter-button">DM's y love</a>
-                <a href="teamo.html" class="letter-button">Te kelo 💖</a>
-                <a href="jpxzshit.html" class="letter-button">Archivo especial</a>
-            </div>
+  <div class="intro-copy">
+    <p>un espacio solo para ti</p>
+    <small>buzon especial</small>
+    <div class="intro-line"></div>
+  </div>
 
-            <!-- Texto central -->
-            <div class="center-text">
-                Un espacio sin límite<br>
-                como mi cariño por ti 💕
-            </div>
+  <div class="intro-hint">toca para entrar</div>
 
-        </div>
+</div>
 
+<!-- ========================
+     PAGE
+======================== -->
+<div class="page" id="mainPage">
+
+  <!-- header -->
+  <div class="hdr">
+    <div class="hdr-tag">
+      <div class="hdr-tag-dot"></div>
+      <span>solo para ti</span>
     </div>
+    <h1>Buzon <em>Especial</em></h1>
+    <p class="hdr-sub">un espacio hecho con todo mi carino</p>
+  </div>
 
+  <!-- stats -->
+  <div class="stats">
+    <div class="stat">
+      <div class="stat-n">7</div>
+      <div class="stat-l">secciones</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n" id="daysEl">0</div>
+      <div class="stat-l">dias juntos</div>
+    </div>
+    <div class="stat">
+      <div class="stat-n">TE</div>
+      <div class="stat-l">AMO</div>
+    </div>
+  </div>
+
+  <!-- foto -->
+  <div class="photo-wrap">
+    <div class="photo-badge">
+      <div class="badge-dot"></div>
+      <span>JPXZ</span>
+    </div>
+    <div class="photo-frame">
+      <img src="focas.jpg" alt="tu y yo">
+      <div class="photo-grad"></div>
+      <div class="photo-cap">
+        <p>Focas enamoradas</p>
+        <small>como tu y yo</small>
+      </div>
+    </div>
+    <div class="photo-sticker">Te amoooo</div>
+  </div>
+
+  <!-- rule -->
+  <div class="rule"><span>elige una carta</span></div>
+
+  <!-- grid -->
+  <div class="grid">
+
+    <a href="flores.html" class="card ca">
+      <span class="card-n">01</span>
+      <div>
+        <div class="card-lbl">Floreshitas</div>
+        <div class="card-s">para ti</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="estrellas.html" class="card cb">
+      <span class="card-n">02</span>
+      <div>
+        <div class="card-lbl">Estrellitas</div>
+        <div class="card-s">del cielo</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="melodia.html" class="card cc">
+      <span class="card-n">03</span>
+      <div>
+        <div class="card-lbl">Melodia jpxz</div>
+        <div class="card-s">nuestra cancion</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="momentos.html" class="card cd">
+      <span class="card-n">04</span>
+      <div>
+        <div class="card-lbl">Moments</div>
+        <div class="card-s">los mejores</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="mensaje.html" class="card ce">
+      <span class="card-n">05</span>
+      <div>
+        <div class="card-lbl">DMs y love</div>
+        <div class="card-s">te amito</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="teamo.html" class="card cf">
+      <span class="card-n">06</span>
+      <div>
+        <div class="card-lbl">Te amo</div>
+        <div class="card-s">mucho mucho</div>
+      </div>
+      <div class="card-foot">
+        <div class="card-arr"><svg viewBox="0 0 10 10" fill="none"><path d="M2 8L8 5 2 2" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+      </div>
+    </a>
+
+    <a href="jpxzshit.html" class="card-wide">
+      <div class="wide-left">
+        <div class="wide-lbl">Archivo especial</div>
+        <div class="wide-s">te amo enserio</div>
+      </div>
+      <div class="wide-right">
+        <div class="wide-icon">
+          <svg viewBox="0 0 20 20" fill="none">
+            <path d="M4 6h12M4 10h8M4 14h5" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M14 12l3.5 2.5L14 17" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- quote -->
+  <div class="quote-card">
+    <span class="quote-mark">"</span>
+    <p>Un espacio sin limite,<br>como mi amor por ti.</p>
+    <div class="quote-dash"></div>
+  </div>
+
+  <!-- footer -->
+  <div class="foot">
+    <p>hecho con todo el fking amor del mundo</p>
+  </div>
+
+</div>
+
+<script>
+// ============================================================
+// FLOATING BALLS (PAGE BG)
+// ============================================================
+(function(){
+  const wrap = document.getElementById('floaters');
+  for (let i = 0; i < 14; i++) {
+    const d = document.createElement('div');
+    d.className = 'fl';
+    const sz = 6 + Math.random() * 18;
+    const dur = 8 + Math.random() * 14;
+    const del = Math.random() * 12;
+    d.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${Math.random()*96}%;
+      bottom:${-sz}px;
+      animation-duration:${dur}s;
+      animation-delay:${del}s;
+    `;
+    wrap.appendChild(d);
+  }
+})();
+
+// ============================================================
+// INTRO PETALS
+// ============================================================
+(function(){
+  const wrap = document.getElementById('ipetals');
+  const colors = ['rgba(244,167,191,0.4)','rgba(232,114,143,0.3)','rgba(249,202,218,0.45)','rgba(255,220,235,0.5)'];
+  for (let i = 0; i < 20; i++) {
+    const d = document.createElement('div');
+    d.className = 'ipetal';
+    const sz = 5 + Math.random() * 12;
+    const dur = 5 + Math.random() * 8;
+    const del = Math.random() * 6;
+    d.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${Math.random()*100}%;
+      top:-20px;
+      background:${colors[Math.floor(Math.random()*colors.length)]};
+      animation-duration:${dur}s;
+      animation-delay:${del}s;
+      transform-origin: center;
+    `;
+    wrap.appendChild(d);
+  }
+})();
+
+// ============================================================
+// DIAS JUNTOS — cambia esta fecha por la fecha real
+// ============================================================
+(function(){
+  const start = new Date('2024-01-01'); // <-- CAMBIA ESTA FECHA
+  const now = new Date();
+  const days = Math.floor((now - start) / 86400000);
+  document.getElementById('daysEl').textContent = days > 0 ? days : '0';
+})();
+
+// ============================================================
+// 3D HEART + ARROW
+// ============================================================
+(function(){
+  const cv = document.getElementById('heartCanvas');
+  const ctx = cv.getContext('2d');
+  const W = cv.width, H = cv.height;
+  const cx = W/2, cy = H/2 + 14;
+
+  // Generar puntos del corazon
+  function hpt(t, s) {
+    const x =  16 * Math.pow(Math.sin(t), 3);
+    const y = -(13*Math.cos(t) - 5*Math.cos(2*t) - 2*Math.cos(3*t) - Math.cos(4*t));
+    const z =   s * 5.5 * Math.sin(t);
+    return {x, y, z};
+  }
+  const NP = 60, MP = 30;
+  const raw = [];
+  for (let i = 0; i <= NP; i++)
+    for (let j = 0; j <= MP; j++)
+      raw.push(hpt((i/NP)*Math.PI*2, (j/MP)*2-1));
+
+  function rotY(p,a){ return {x:p.x*Math.cos(a)+p.z*Math.sin(a), y:p.y, z:-p.x*Math.sin(a)+p.z*Math.cos(a)}; }
+  function rotX(p,a){ return {x:p.x, y:p.y*Math.cos(a)-p.z*Math.sin(a), z:p.y*Math.sin(a)+p.z*Math.cos(a)}; }
+  function proj(p, sc){
+    const fov = 360;
+    const f = fov/(fov+p.z+48);
+    return {x: cx+p.x*sc*f, y: cy+p.y*sc*f, d:f};
+  }
+
+  let ang = 0, tiltX = 0.18;
+  let frame = 0, t0 = null, done = false;
+
+  // Estado flecha
+  let arrowPhase = 'idle'; // idle | fly | gone
+  let arrowT = 0; // 0..1 durante vuelo
+  let arrowX = -80;
+  const arrowY_canvas = cy; // altura de la flecha
+  let nextArrow = 2200; // ms hasta primer disparo
+
+  function pulse(t){ return 1 + 0.07*Math.pow(Math.max(0,Math.sin(t*2.18)),2); }
+
+  function drawArrow(x, y, alpha){
+    ctx.save();
+    ctx.globalAlpha = alpha;
+    ctx.translate(x, y);
+
+    // sombra suave
+    ctx.shadowColor = 'rgba(232,114,143,0.6)';
+    ctx.shadowBlur = 14;
+
+    // cuerpo de la flecha (flecha curva tipo Cupido)
+    ctx.strokeStyle = '#E8728F';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+    ctx.moveTo(-44, 0);
+    ctx.lineTo(40, 0);
+    ctx.stroke();
+
+    // punta
+    ctx.fillStyle = '#E8728F';
+    ctx.beginPath();
+    ctx.moveTo(44, 0);
+    ctx.lineTo(30, -7);
+    ctx.lineTo(30, 7);
+    ctx.closePath();
+    ctx.fill();
+
+    // plumas traseras
+    ctx.strokeStyle = '#F4A7BF';
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.moveTo(-44,0); ctx.lineTo(-54,-8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-44,0); ctx.lineTo(-54, 8); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-38,0); ctx.lineTo(-48,-7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-38,0); ctx.lineTo(-48, 7); ctx.stroke();
+
+    // sparkles alrededor
+    ctx.fillStyle = 'rgba(244,167,191,0.8)';
+    for(let i=0;i<3;i++){
+      const rx = -20 + i*20 + Math.sin(Date.now()*0.004+i)*6;
+      const ry = -18 + Math.cos(Date.now()*0.003+i)*5;
+      const sz = 2.5 + Math.sin(Date.now()*0.005+i)*1;
+      ctx.beginPath();
+      ctx.arc(rx,ry,sz,0,Math.PI*2);
+      ctx.fill();
+    }
+
+    ctx.restore();
+  }
+
+  function draw(ts){
+    if(!t0) t0 = ts;
+    const elapsed = ts - t0;
+    frame++;
+    const t = frame*0.016;
+
+    ctx.clearRect(0,0,W,H);
+
+    const sc = pulse(t) * 15;
+
+    // rotar puntos
+    const rot = raw.map(p => rotX(rotY(p,ang), tiltX));
+    const projected = rot.map(p => proj(p, sc)).sort((a,b)=>a.d-b.d);
+
+    // dibujar puntos del corazon
+    for(const p of projected){
+      const dep = Math.max(0, Math.min(1, (p.d-0.56)/0.5));
+      const alpha = 0.06 + dep*0.88;
+      const sz = 0.5 + dep*3.2;
+      // colores rosados claros para fondo blanco
+      const r = Math.round(248 - dep*30);
+      const g = Math.round(140 - dep*70);
+      const b = Math.round(175 - dep*50);
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, sz, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(${r},${g},${b},${alpha})`;
+      ctx.fill();
+    }
+
+    // brillo central suave
+    const grd = ctx.createRadialGradient(cx,cy-12,0,cx,cy-12,170);
+    grd.addColorStop(0,'rgba(244,167,191,0.13)');
+    grd.addColorStop(1,'rgba(244,167,191,0)');
+    ctx.fillStyle = grd; ctx.fillRect(0,0,W,H);
+
+    // FLECHA
+    if(!done){
+      if(arrowPhase === 'idle' && elapsed >= nextArrow){
+        arrowPhase = 'fly';
+        arrowT = 0;
+        arrowX = -80;
+      }
+      if(arrowPhase === 'fly'){
+        arrowT += 0.012; // velocidad
+        arrowX = -80 + arrowT * (W + 160);
+        // alpha: fade in al principio, fade out al final
+        const alpha = arrowT < 0.08 ? arrowT/0.08 : arrowT > 0.9 ? (1-arrowT)/0.1 : 1;
+        // ondulacion vertical sutil
+        const yOff = Math.sin(arrowT * Math.PI * 2) * 8;
+        drawArrow(arrowX, arrowY_canvas + yOff, Math.max(0, Math.min(1, alpha)));
+        if(arrowT >= 1){
+          arrowPhase = 'idle';
+          nextArrow = elapsed + 2400 + Math.random()*1200; // repite cada ~2.4-3.6s
+        }
+      }
+    }
+
+    ang += 0.011;
+    tiltX = 0.18 + 0.07*Math.sin(t*0.38);
+
+    if(!done && elapsed > 4200) triggerExit();
+    if(!done) requestAnimationFrame(draw);
+  }
+
+  requestAnimationFrame(draw);
+
+  function triggerExit(){
+    if(done) return;
+    done = true;
+    const intr = document.getElementById('intro');
+    const pg   = document.getElementById('mainPage');
+    intr.classList.add('out');
+    pg.classList.add('show');
+    setTimeout(()=>{ intr.style.display='none'; }, 900);
+  }
+
+  document.getElementById('intro').addEventListener('click', triggerExit);
+  document.getElementById('intro').addEventListener('touchstart', triggerExit, {passive:true});
+})();
+
+// ============================================================
+// RIPPLE EN CARDS
+// ============================================================
+document.querySelectorAll('.card,.card-wide').forEach(el=>{
+  el.addEventListener('touchstart', function(e){
+    const t = e.touches[0];
+    const r = this.getBoundingClientRect();
+    const rpl = document.createElement('span');
+    rpl.className = 'rpl';
+    const s = Math.max(r.width, r.height);
+    rpl.style.cssText=`width:${s}px;height:${s}px;left:${t.clientX-r.left-s/2}px;top:${t.clientY-r.top-s/2}px`;
+    this.appendChild(rpl);
+    setTimeout(()=>rpl.remove(), 520);
+  },{passive:true});
+});
+</script>
 </body>
 </html>
