@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>jpxzlover</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Outfit:wght@200;300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --rose:   #E8728F;
+      --pink:   #F4A7BF;
+      --blush:  #FAE3EB;
+      --petal:  #FEF5F8;
+      --deep:   #C94F6D;
+      --cream:  #FFFBFC;
+      --txt:    #3D1A26;
+      --muted:  #B07088;
+      --line:   rgba(232,114,143,0.18);
+      --gold:   #E8B88A;
+    }
+
+    html, body { min-height: 100%; width: 100%; }
+    body {
+      font-family: 'Outfit', sans-serif;
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* ==============================
+       FONDO DECORATIVO
+    ============================== */
+    .bg-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    /* patron punteado muy sutil */
+    .bg-dots {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(232,114,143,0.12) 1.2px, transparent 1.2px);
+      background-size: 22px 22px;
+    }
+    /* gradientes de esquina */
+    .bg-grd {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 40% at 5% 5%,   rgba(244,167,191,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 50% 45% at 95% 90%,  rgba(232,114,143,0.14) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 30% at 90% 15%,  rgba(248,200,215,0.12) 0%, transparent 60%);
+    }
+
+    /* lineas diagonales decorativas */
+    .diag-lines {
+      position: absolute;
+      inset: 0;
+      background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 40px,
+        rgba(244,167,191,0.04) 40px,
+        rgba(244,167,191,0.04) 41px
+      );
+    }
+
+    /* ==============================
+       ESQUINAS DECORATIVAS GLOBALES
+    ============================== */
+    .corner {
+      position: fixed;
+      width: 80px; height: 80px;
+      pointer-events: none;
+      z-index: 5;
+    }
+    .corner svg { width: 100%; height: 100%; }
+    .corner-tl { top: 10px; left: 10px; }
+    .corner-tr { top: 10px; right: 10px; transform: scaleX(-1); }
+    .corner-bl { bottom: 10px; left: 10px; transform: scaleY(-1); }
+    .corner-br { bottom: 10px; right: 10px; transform: scale(-1,-1); }
+
+    /* ==============================
+       WRAPPER
+    ============================== */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 430px;
+      margin: 0 auto;
+      padding: 52px 22px 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 36px;
+    }
+
+    /* ==============================
+       HEADER
+    ============================== */
+    .hdr {
+      text-align: center;
+      width: 100%;
+      opacity: 0;
+      animation: riseUp 0.9s cubic-bezier(.22,1,.36,1) 0.1s forwards;
+    }
+
+    /* ornamento superior */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+    .orn-line {
+      width: 40px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--rose));
+    }
+    .orn-line.r { background: linear-gradient(90deg, var(--rose), transparent); }
+    .orn-diamond {
+      width: 7px; height: 7px;
+      background: var(--pink);
+      transform: rotate(45deg);
+      box-shadow: 0 0 0 1.5px rgba(232,114,143,0.35);
+    }
+    .orn-dot {
+      width: 4px; height: 4px;
+      background: var(--rose);
+      border-radius: 50%;
+    }
+
+    .hdr-label {
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 300;
+      margin-bottom: 10px;
+    }
+
+    .hdr h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.9rem;
+      font-weight: 400;
+      color: var(--txt);
+      line-height: 1.05;
+    }
+    .hdr h1 em {
+      font-style: italic;
+      color: var(--rose);
+    }
+    .hdr h1 span {
+      display: block;
+      font-size: 1.6rem;
+      font-style: italic;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 2px;
+    }
+
+    .hdr-date {
+      margin-top: 12px;
+      font-size: 0.68rem;
+      letter-spacing: 0.12em;
+      color: var(--muted);
+      font-weight: 300;
+    }
+    .hdr-date strong {
+      color: var(--rose);
+      font-weight: 400;
+    }
+
+    /* ==============================
+       SOBRE / ENVELOPE OPENING
+    ============================== */
+    .envelope-wrap {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      opacity: 0;
+      animation: riseUp 0.9s cubic-bezier(.22,1,.36,1) 0.3s forwards;
+    }
+
+    .envelope {
+      width: 200px;
+      height: 140px;
+      position: relative;
+      cursor: pointer;
+    }
+    .env-body {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(160deg, #FDE8F0, #F7C5D8);
+      border-radius: 8px 8px 14px 14px;
+      border: 1px solid rgba(232,114,143,0.3);
+      box-shadow: 0 8px 24px rgba(232,114,143,0.15);
+    }
+    /* triangulo superior */
+    .env-flap {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 0;
+      border-left: 100px solid transparent;
+      border-right: 100px solid transparent;
+      border-top: 85px solid #F7C5D8;
+      border-radius: 8px 8px 0 0;
+      transform-origin: top;
+      transition: transform 0.6s cubic-bezier(.4,0,.2,1);
+    }
+    .envelope.open .env-flap {
+      transform: rotateX(-180deg);
+    }
+    /* triangulos laterales del sobre */
+    .env-left {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 0;
+      border-bottom: 70px solid #FDE8F0;
+      border-right: 100px solid transparent;
+      border-radius: 0 0 0 14px;
+    }
+    .env-right {
+      position: absolute;
+      bottom: 0; right: 0;
+      width: 0; height: 0;
+      border-bottom: 70px solid #FDE8F0;
+      border-left: 100px solid transparent;
+      border-radius: 0 0 14px 0;
+    }
+    /* sello */
+    .env-seal {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 32px; height: 32px;
+      background: white;
+      border: 1.5px solid rgba(232,114,143,0.4);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(232,114,143,0.15);
+      transition: opacity 0.3s ease;
+      z-index: 2;
+    }
+    .envelope.open .env-seal { opacity: 0; }
+    .env-seal svg { width: 16px; height: 16px; }
+
+    /* carta que sale del sobre */
+    .env-card-out {
+      width: 180px;
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 12px 14px;
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: var(--deep);
+      line-height: 1.5;
+      position: relative;
+      top: -10px;
+      transform: translateY(-30px) scale(0.85);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(.34,1.56,.64,1) 0.3s;
+      box-shadow: 0 6px 20px rgba(232,114,143,0.12);
+    }
+    .envelope.open + .env-card-out {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+
+    .tap-hint {
+      margin-top: 10px;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--pink);
+      font-weight: 300;
+      animation: blink 2s ease infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:.3} 50%{opacity:.9} }
+
+    /* ==============================
+       CARTA PRINCIPAL
+    ============================== */
+    .letter {
+      width: 100%;
+      background: white;
+      border-radius: 24px;
+      border: 1px solid var(--line);
+      padding: 32px 26px;
+      position: relative;
+      box-shadow: 0 8px 40px rgba(232,114,143,0.08);
+      opacity: 0;
+      animation: riseUp 0.9s ease 0.5s forwards;
+    }
+
+    /* borde decorativo interior */
+    .letter::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(232,114,143,0.1);
+      border-radius: 18px;
+      pointer-events: none;
+    }
+
+    /* esquinas florales */
+    .ltr-corner {
+      position: absolute;
+      width: 28px; height: 28px;
+      opacity: 0.4;
+    }
+    .ltr-corner svg { width: 100%; height: 100%; }
+    .ltr-c1 { top: 14px; left: 14px; }
+    .ltr-c2 { top: 14px; right: 14px; transform: scaleX(-1); }
+    .ltr-c3 { bottom: 14px; left: 14px; transform: scaleY(-1); }
+    .ltr-c4 { bottom: 14px; right: 14px; transform: scale(-1,-1); }
+
+    .letter-top {
+      text-align: center;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--line);
+    }
+    .letter-to {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--rose);
+    }
+
+    .letter-body p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem;
+      font-weight: 300;
+      color: var(--txt);
+      line-height: 1.85;
+      margin-bottom: 16px;
+    }
+    .letter-body p:last-child { margin-bottom: 0; }
+
+    /* primera letra grande */
+    .dropcap {
+      font-size: 2.8rem;
+      font-weight: 500;
+      color: var(--rose);
+      float: left;
+      line-height: 0.75;
+      margin: 6px 6px 0 0;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .letter-sign {
+      margin-top: 24px;
+      padding-top: 18px;
+      border-top: 1px solid var(--line);
+      text-align: right;
+    }
+    .letter-sign p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.05rem;
+      color: var(--muted);
+    }
+    .letter-sign strong {
+      display: block;
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--deep);
+      font-weight: 400;
+      margin-top: 2px;
+    }
+
+    /* ==============================
+       GALERIA DE FOTOS
+    ============================== */
+    .gallery-section {
+      width: 100%;
+      opacity: 0;
+      animation: riseUp 0.9s ease 0.7s forwards;
+    }
+
+    .gallery-title {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .gallery-title .orn { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 8px; }
+    .gallery-title .orn-line2 { width: 30px; height: 1px; background: linear-gradient(90deg, transparent, var(--rose)); }
+    .gallery-title .orn-line2.r { background: linear-gradient(90deg, var(--rose), transparent); }
+    .gallery-title .orn-gem { font-family: 'Cormorant Garamond', serif; font-size: 0.9rem; color: var(--rose); }
+    .gallery-title p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.25rem;
+      color: var(--txt);
+    }
+    .gallery-title small {
+      display: block;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 300;
+      margin-top: 4px;
+    }
+
+    /* foto grande */
+    .photo-hero {
+      width: 100%;
+      border-radius: 22px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+      position: relative;
+      box-shadow: 0 16px 48px rgba(232,114,143,0.18);
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+    .photo-hero img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.7s ease;
+    }
+    .photo-hero:active img { transform: scale(1.04); }
+    .photo-hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(40,5,18,0.55) 0%, transparent 50%);
+    }
+    .photo-hero-tag {
+      position: absolute;
+      top: 14px; right: 14px;
+      background: rgba(255,255,255,0.85);
+      backdrop-filter: blur(8px);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 0.58rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--deep);
+      font-weight: 400;
+    }
+    .photo-hero-caption {
+      position: absolute;
+      bottom: 16px; left: 16px; right: 16px;
+    }
+    .photo-hero-caption p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,0.92);
+      line-height: 1.25;
+    }
+    .photo-hero-caption small {
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,210,225,0.65);
+      font-weight: 300;
+    }
+
+    /* grid 2 columnas */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .photo-item {
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(232,114,143,0.12);
+    }
+    .photo-item img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.55s ease;
+    }
+    .photo-item:active img { transform: scale(1.05); }
+    .photo-item-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(40,5,18,0.42) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .photo-item:hover .photo-item-overlay { opacity: 1; }
+    .photo-item-label {
+      position: absolute;
+      bottom: 10px; left: 12px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.9);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .photo-item:hover .photo-item-label { opacity: 1; }
+
+    /* numero decorativo en cada foto */
+    .photo-num {
+      position: absolute;
+      top: 10px; left: 12px;
+      font-size: 0.55rem;
+      letter-spacing: 0.16em;
+      color: rgba(255,255,255,0.7);
+      font-weight: 300;
+      background: rgba(232,114,143,0.45);
+      backdrop-filter: blur(4px);
+      border-radius: 100px;
+      padding: 3px 9px;
+    }
+
+    /* ==============================
+       LIGHTBOX
+    ============================== */
+    #lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 300;
+      background: rgba(20,3,10,0.94);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+      padding: 20px;
+    }
+    #lightbox.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lb-img {
+      max-width: 100%;
+      max-height: 80vh;
+      border-radius: 18px;
+      object-fit: contain;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+      transform: scale(0.88);
+      transition: transform 0.4s cubic-bezier(.34,1.56,.64,1);
+    }
+    #lightbox.visible .lb-img { transform: scale(1); }
+    .lb-close {
+      position: absolute;
+      top: 20px; right: 20px;
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      backdrop-filter: blur(8px);
+    }
+    .lb-close svg { width: 14px; height: 14px; }
+    .lb-caption {
+      position: absolute;
+      bottom: 30px;
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(255,220,230,0.7);
+      text-align: center;
+    }
+
+    /* ==============================
+       POLAROIDS DECORATIVOS
+    ============================== */
+    .polaroid-row {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      margin-top: 4px;
+      opacity: 0;
+      animation: riseUp 0.8s ease 0.9s forwards;
+    }
+    .polaroid {
+      background: white;
+      padding: 10px 10px 24px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+      border-radius: 4px;
+      width: 120px;
+      transition: transform 0.3s ease;
+    }
+    .polaroid:nth-child(1) { transform: rotate(-4deg) translateY(4px); z-index: 1; }
+    .polaroid:nth-child(2) { transform: rotate(0deg) translateY(-6px); z-index: 3; }
+    .polaroid:nth-child(3) { transform: rotate(4.5deg) translateY(2px); z-index: 2; }
+    .polaroid:nth-child(1):active { transform: rotate(-2deg) translateY(0) scale(1.05); z-index: 10; }
+    .polaroid:nth-child(2):active { transform: rotate(0deg) scale(1.05); z-index: 10; }
+    .polaroid:nth-child(3):active { transform: rotate(2deg) translateY(0) scale(1.05); z-index: 10; }
+    .pol-photo {
+      width: 100%;
+      aspect-ratio: 1;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .pol-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .pol-text {
+      text-align: center;
+      margin-top: 8px;
+      font-family: 'Outfit', sans-serif;
+      font-size: 0.62rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+    }
+
+    /* ==============================
+       FRASES / QUOTES FLOTANTES
+    ============================== */
+    .quotes-row {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      opacity: 0;
+      animation: riseUp 0.9s ease 1s forwards;
+    }
+
+    .mini-quote {
+      padding: 18px 20px;
+      border-radius: 18px;
+      border-left: 3px solid var(--rose);
+      background: var(--petal);
+      position: relative;
+    }
+    .mini-quote:nth-child(even) {
+      border-left: none;
+      border-right: 3px solid var(--pink);
+      background: var(--blush);
+      text-align: right;
+    }
+    .mini-quote p {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--txt);
+      line-height: 1.6;
+      font-weight: 300;
+    }
+    .mini-quote .mq-tag {
+      display: inline-block;
+      font-size: 0.55rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--rose);
+      font-family: 'Outfit', sans-serif;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+
+    /* ==============================
+       FINAL
+    ============================== */
+    .final-block {
+      width: 100%;
+      text-align: center;
+      opacity: 0;
+      animation: riseUp 0.9s ease 1.1s forwards;
+    }
+    .final-ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+    .fo-line { width: 50px; height: 1px; background: var(--line); }
+    .fo-diamond {
+      width: 8px; height: 8px;
+      background: transparent;
+      border: 1.5px solid var(--rose);
+      transform: rotate(45deg);
+    }
+    .fo-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--pink); }
+
+    .final-block .seal {
+      width: 70px; height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #FFB8D0, #E8728F);
+      margin: 0 auto 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(232,114,143,0.3);
+      animation: beatSeal 2.2s ease-in-out infinite;
+    }
+    @keyframes beatSeal {
+      0%,100% { transform: scale(1); box-shadow: 0 8px 24px rgba(232,114,143,0.3); }
+      45%      { transform: scale(1.07); box-shadow: 0 12px 32px rgba(232,114,143,0.45); }
+      55%      { transform: scale(1.04); }
+    }
+    .seal svg { width: 30px; height: 30px; }
+
+    .final-block h2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--txt);
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .final-block h2 em { color: var(--rose); }
+    .final-block p {
+      font-size: 0.75rem;
+      color: var(--muted);
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+
+    /* back button */
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 24px;
+      padding: 12px 24px;
+      background: var(--petal);
+      border: 1px solid var(--line);
+      border-radius: 100px;
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-weight: 400;
+      transition: all 0.2s ease;
+    }
+    .back-btn:active { transform: scale(0.96); background: var(--blush); }
+    .back-btn svg { width: 12px; height: 12px; }
+
+    /* ==============================
+       ANIMACIONES
+    ============================== */
+    @keyframes riseUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: none; }
+    }
+
+    /* ==============================
+       FALLING PETALS
+    ============================== */
+    .petals-wrap {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .petal {
+      position: absolute;
+      top: -20px;
+      border-radius: 50% 50% 50% 0;
+      opacity: 0;
+      animation: petalDrop linear infinite;
+    }
+    @keyframes petalDrop {
+      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
+      8%   { opacity: 0.55; }
+      88%  { opacity: 0.35; }
+      100% { transform: translateY(105vh) rotate(380deg); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- FONDO -->
+<div class="bg-layer">
+  <div class="bg-dots"></div>
+  <div class="bg-grd"></div>
+  <div class="diag-lines"></div>
+</div>
+<div class="petals-wrap" id="petalsWrap"></div>
+
+<!-- ESQUINAS DECORATIVAS -->
+<div class="corner corner-tl">
+  <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 76 L4 4 L76 4" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <path d="M4 4 Q24 4 24 24" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <circle cx="14" cy="14" r="3" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/>
+    <circle cx="4" cy="4" r="1.5" fill="rgba(232,114,143,0.5)"/>
+    <!-- flor pequeña -->
+    <circle cx="38" cy="4" r="2" fill="rgba(244,167,191,0.4)"/>
+    <circle cx="4" cy="38" r="2" fill="rgba(244,167,191,0.4)"/>
+  </svg>
+</div>
+<div class="corner corner-tr">
+  <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 76 L4 4 L76 4" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <path d="M4 4 Q24 4 24 24" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <circle cx="14" cy="14" r="3" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/>
+    <circle cx="4" cy="4" r="1.5" fill="rgba(232,114,143,0.5)"/>
+    <circle cx="38" cy="4" r="2" fill="rgba(244,167,191,0.4)"/>
+    <circle cx="4" cy="38" r="2" fill="rgba(244,167,191,0.4)"/>
+  </svg>
+</div>
+<div class="corner corner-bl">
+  <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 76 L4 4 L76 4" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <path d="M4 4 Q24 4 24 24" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <circle cx="14" cy="14" r="3" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/>
+    <circle cx="4" cy="4" r="1.5" fill="rgba(232,114,143,0.5)"/>
+    <circle cx="38" cy="4" r="2" fill="rgba(244,167,191,0.4)"/>
+    <circle cx="4" cy="38" r="2" fill="rgba(244,167,191,0.4)"/>
+  </svg>
+</div>
+<div class="corner corner-br">
+  <svg viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M4 76 L4 4 L76 4" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <path d="M4 4 Q24 4 24 24" stroke="rgba(232,114,143,0.3)" stroke-width="1" fill="none"/>
+    <circle cx="14" cy="14" r="3" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/>
+    <circle cx="4" cy="4" r="1.5" fill="rgba(232,114,143,0.5)"/>
+    <circle cx="38" cy="4" r="2" fill="rgba(244,167,191,0.4)"/>
+    <circle cx="4" cy="38" r="2" fill="rgba(244,167,191,0.4)"/>
+  </svg>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <img src="" alt="" class="lb-img" id="lbImg">
+  <div class="lb-close" id="lbClose">
+    <svg viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="white" stroke-width="1.5" stroke-linecap="round"/></svg>
+  </div>
+  <div class="lb-caption" id="lbCaption"></div>
+</div>
+
+<!-- ========================
+     CONTENIDO
+======================== -->
+<div class="wrapper">
+
+  <!-- HEADER -->
+  <div class="hdr">
+    <div class="ornament">
+      <div class="orn-line"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-diamond"></div>
+      <div class="orn-dot"></div>
+      <div class="orn-line r"></div>
+    </div>
+    <div class="hdr-label">cartita para avon</div>
+    <h1>For <em>you,</em><span>ILVYSM</span></h1>
+    <div class="hdr-date">escrita con amor <strong>100% rial no fake</strong></div>
+  </div>
+
+  <!-- SOBRE INTERACTIVO -->
+  <div class="envelope-wrap">
+    <div class="envelope" id="envelope">
+      <div class="env-body"></div>
+      <div class="env-flap"></div>
+      <div class="env-left"></div>
+      <div class="env-right"></div>
+      <div class="env-seal">
+        <!-- corazon SVG -->
+        <svg viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M10 16S2 10.5 2 5.5a4 4 0 018 0 4 4 0 018 0C18 10.5 10 16 10 16z" fill="#E8728F"/>
+        </svg>
+      </div>
+    </div>
+    <div class="env-card-out" id="envCardOut">
+     te amo foquita (ENSERIO)
+    </div>
+    <div class="tap-hint" id="tapHint">pikale alb</div>
+  </div>
+
+  <!-- CARTA -->
+  <div class="letter">
+    <!-- esquinas florales de la carta -->
+    <div class="ltr-corner ltr-c1">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M2 26 L2 2 L26 2" stroke="rgba(232,114,143,0.4)" stroke-width="1" fill="none"/><circle cx="6" cy="6" r="2.5" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/><circle cx="2" cy="2" r="1.2" fill="rgba(244,167,191,0.6)"/></svg>
+    </div>
+    <div class="ltr-corner ltr-c2">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M2 26 L2 2 L26 2" stroke="rgba(232,114,143,0.4)" stroke-width="1" fill="none"/><circle cx="6" cy="6" r="2.5" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/><circle cx="2" cy="2" r="1.2" fill="rgba(244,167,191,0.6)"/></svg>
+    </div>
+    <div class="ltr-corner ltr-c3">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M2 26 L2 2 L26 2" stroke="rgba(232,114,143,0.4)" stroke-width="1" fill="none"/><circle cx="6" cy="6" r="2.5" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/><circle cx="2" cy="2" r="1.2" fill="rgba(244,167,191,0.6)"/></svg>
+    </div>
+    <div class="ltr-corner ltr-c4">
+      <svg viewBox="0 0 28 28" fill="none"><path d="M2 26 L2 2 L26 2" stroke="rgba(232,114,143,0.4)" stroke-width="1" fill="none"/><circle cx="6" cy="6" r="2.5" fill="none" stroke="rgba(232,114,143,0.4)" stroke-width="1"/><circle cx="2" cy="2" r="1.2" fill="rgba(244,167,191,0.6)"/></svg>
+    </div>
+
+    <div class="letter-top">
+      <div class="letter-to">Para ti, mi amor</div>
+    </div>
+
+    <div class="letter-body">
+      <p><span class="dropcap">S</span>iendo sincero, jamas pense que tuuu llegaras a ser algo tan importante en mi vida como lo eres ahora, talvez no sepa expresarme muy bien pero
+siempre querre hacer sentir feliz o aunque sea hacerte sentir amada</p>
+      <p>Quiero que sepas que cada momento contigo lo guardo con mucho amorrr enserio. Tus risas, tus ocurrencias, tu forma de ver el mundo muyy emm aja ya sabes... todo eso me hace querer estar siempre cerca de ti.</p>
+      <p>Este lugar lo hice especialmente para ti, para que siempre tengas un espacio donde sepas lo mucho que significas. No hay palabras suficientes, pero lo intento con cada detalle de esta pagina.</p>
+      <p>Espero que algun dia veas que yo de verdad si te amo</p>
+    </div>
+
+    <div class="letter-sign">
+      <p>con todo mi amorrr,</p>
+      <strong>jpxz_fcxz
+
+</strong>
+    </div>
+  </div>
+
+  <!-- GALERIA -->
+  <div class="gallery-section">
+
+    <div class="gallery-title">
+      <div class="orn">
+        <div class="orn-line2"></div>
+        <div class="orn-gem">Te foca amooo</div>
+        <div class="orn-line2 r"></div>
+      </div>
+      <p>siempre te eh amado</p>
+      <small>enserio te amo mucho</small>
+    </div>
+
+  
+  <!-- POLAROIDS con yvon1-3 repetidas -->
+  <div class="polaroid-row">
+    <div class="polaroid">
+      <div class="pol-photo"><img src="yvon2.jpg" alt="polaroid 1"></div>
+      <div class="pol-text">guayabas jaja</div>
+    </div>
+    <div class="polaroid">
+      <div class="pol-photo"><img src="yvon1.jpg" alt="polaroid 2"></div>
+      <div class="pol-text">tukumbo jr</div>
+    </div>
+    <div class="polaroid">
+      <div class="pol-photo"><img src="yvon3.jpg" alt="polaroid 3"></div>
+      <div class="pol-text">te kelo</div>
+    </div>
+  </div>
+
+  <!-- MINI QUOTES -->
+  <div class="quotes-row">
+    <div class="mini-quote">
+      <div class="mq-tag">perdon :(</div>
+      <p>Contigo todo es mejor, incluso los dias "x" se vuelven especiales a tu lado y enserio perdon por no saber expresarme bien :(.</p>
+    </div>
+    <div class="mini-quote">
+      <div class="mq-tag">siempre</div>
+      <p>No necesito razones para amarte, pero la verdad razones sobran...</p>
+    </div>
+    <div class="mini-quote">
+      <div class="mq-tag">100% true</div>
+      <p>Eres la persona mas unica que hay y me quiero quedar contigo siempre (ENSERIO).</p>
+    </div>
+  </div>
+
+  <!-- FINAL -->
+  <div class="final-block">
+    <div class="final-ornament">
+      <div class="fo-line"></div>
+      <div class="fo-dot"></div>
+      <div class="fo-diamond"></div>
+      <div class="fo-dot"></div>
+      <div class="fo-line"></div>
+    </div>
+    <div class="seal">
+      <svg viewBox="0 0 30 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M15 25S3 16 3 8a6 6 0 0112 0 6 6 0 0112 0C27 16 15 25 15 25z" fill="white" fill-opacity="0.9"/>
+      </svg>
+    </div>
+    <h2>Te pienso, <em>siempre.</em></h2>
+    <p>perdon por tanto :(</p>
+
+    <a href="index.html" class="back-btn">
+      <svg viewBox="0 0 12 12" fill="none"><path d="M8 2L4 6l4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      volver al indexxxxxx    </a>
+  </div>
+
+</div>
+
+<script>
+// ── PETALS ──
+(function(){
+  const wrap = document.getElementById('petalsWrap');
+  const clrs = ['rgba(244,167,191,0.45)','rgba(250,210,225,0.5)','rgba(232,114,143,0.3)','rgba(255,230,240,0.55)'];
+  for(let i=0;i<18;i++){
+    const d = document.createElement('div');
+    d.className = 'petal';
+    const sz = 5 + Math.random()*10;
+    d.style.cssText = `
+      width:${sz}px; height:${sz}px;
+      left:${Math.random()*100}%;
+      background:${clrs[Math.floor(Math.random()*clrs.length)]};
+      animation-duration:${7+Math.random()*9}s;
+      animation-delay:${Math.random()*8}s;
+    `;
+    wrap.appendChild(d);
+  }
+})();
+
+// ── SOBRE ──
+document.getElementById('envelope').addEventListener('click', function(){
+  this.classList.toggle('open');
+  document.getElementById('tapHint').style.opacity = this.classList.contains('open') ? '0' : '';
+});
+
+// ── LIGHTBOX ──
+const lb     = document.getElementById('lightbox');
+const lbImg  = document.getElementById('lbImg');
+const lbCap  = document.getElementById('lbCaption');
+
+function openLB(src, cap){
+  lbImg.src = src;
+  lbCap.textContent = cap || '';
+  lb.classList.add('visible');
+}
+function closeLB(){ lb.classList.remove('visible'); }
+
+document.querySelectorAll('[data-src]').forEach(el=>{
+  el.addEventListener('click', ()=> openLB(el.dataset.src, el.dataset.cap));
+});
+document.getElementById('lbClose').addEventListener('click', closeLB);
+lb.addEventListener('click', e=>{ if(e.target===lb) closeLB(); });
+</script>
+</body>
+</html>
